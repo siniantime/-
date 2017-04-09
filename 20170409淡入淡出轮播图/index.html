@@ -4,11 +4,103 @@
 		<meta charset="UTF-8">
 		<meta name="author" content="Sup_"/>
 		<meta name="Generator" content="Sublime Text">    
-		<title>淡入淡出动画</title> 
+		<title>淡入淡出动画</title>
+		<style>
+			ul,li{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			.pic{
+				position: relative;
+				width: 419px;
+				height: 419px;
+				margin: auto;
+			}
+			.pic li{
+				position: absolute;
+				z-index: -1;
+			}
+			.pic li:first-child{
+				z-index: 1;
+			}
+			.pic .spot{
+				position: absolute;
+				z-index: 2;
+				width: 100%;
+				bottom: 20px;
+				text-align: center;
+			}
+			.pic .spot span{
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				margin: 10px;
+				border-radius: 50%;
+				background-color: #ccc;
+			}
+			.pic .spot .active{
+				background-color: #ea4c29;
+			}
+		</style>
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				(function(){
+
+					focusFade(pic,3000);
+
+					//淡入淡出焦点图函数
+					function focusFade(id,time){
+						var oPic = $(id).find('li');
+						var oSpot = $(id).find('div').find('span');
+						var iNow = 0;
+						var timer=null;
+
+						//clearInterval(timer);
+						
+						autoPlay();
+
+						oSpot.hover(function() {
+							clearInterval(timer);
+							iNow=$(this).index();
+							fnFade();
+						}, function() {
+							autoPlay();
+						});
+
+						function autoPlay() {
+							timer = setInterval(function(){
+							fnFade();
+							},time) 
+						}
+
+						function fnFade(){
+							oPic.stop().fadeOut(1000).css('z-index', '1');
+							oPic.eq(iNow).stop().fadeIn(1000).css('z-index', '2');
+							oSpot.removeClass('active');
+							oSpot.eq(iNow).addClass('active');
+							(iNow == oPic.length-1)? iNow=0 : iNow++;
+						}
+					}
+						
+				})();
+			});
+			
+		</script> 
 	</head>
 	<body>
-
-
-	    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<div class="content">
+			<ul id="pic" class="pic">
+				<li><img src="img/kt1_85.jpg"></li>
+				<li><img src="img/kt3_85.jpg"></li>
+				<li><img src="img/kt4_85.jpg"></li>
+				<li><img src="img/kt5_85.jpg"></li>
+				<li><img src="img/kt6_85.jpg"></li>
+				<div class="spot"><span class="active"></span><span></span><span></span><span></span><span></span></div>
+			</ul>
+		</div>
 	</body>
 </html>
